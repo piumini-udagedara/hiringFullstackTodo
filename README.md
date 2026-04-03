@@ -184,4 +184,4 @@ If you encounter CORS errors, ensure:
 - Check the `BASE_URL` in `src/configs/appConfig.ts`
 - Ensure the backend API is accessible
 
-# hiringullstackTodo
+
