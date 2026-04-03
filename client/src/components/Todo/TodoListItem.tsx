@@ -7,7 +7,7 @@ import { Textarea } from "../input/Textarea";
 
 interface TodoListItemProps {
   todo: TodoInterface;
-  toggleTodo: (value: { id: number; stuts: boolean }) => void;
+  toggleTodo: (value: { id: number; done: boolean }) => void;
   deleteTodo: (id: number) => void;
   editTodo: (value: {
     id: number;
@@ -28,21 +28,16 @@ export function TodoListItem({
 
   const handleEdit = () => {
     if (isEditing) {
-      if (newTitle.trim()) {
-        editTodo({
-          id: todo.id,
-          title: newTitle.trim(),
-          description: newDescription || null,
-        });
-        setIsEditing(false);
-      } else {
-        // Revert to original values if new title is empty
-        setNewTitle(todo.title);
-        setNewDescription(todo.description ?? "");
-        setIsEditing(false);
+      if (!newTitle.trim()) {
+        return;
       }
+      editTodo({
+        id: todo.id,
+        title: newTitle.trim(),
+        description: newDescription || null,
+      });
+      setIsEditing(false);
     } else {
-      // Reset to current todo values when entering edit mode
       setNewTitle(todo.title);
       setNewDescription(todo.description ?? "");
       setIsEditing(true);
@@ -57,8 +52,9 @@ export function TodoListItem({
         <input
           type="checkbox"
           checked={todo.done}
-          onChange={() => toggleTodo({ id: todo.id, stuts: !todo.done })}
-          className="mt-1 form-checkbox h-5 w-5 text-blue-600 rounded "
+          onChange={() => toggleTodo({ id: todo.id, done: !todo.done })}
+          className="mt-1 h-5 w-5 rounded border border-gray-300 text-blue-600 focus:ring-blue-500"
+          aria-label={todo.done ? `Mark ${todo.title} as undone` : `Mark ${todo.title} as done`}
         />
         <div className="flex-grow">
           {isEditing ? (
@@ -97,30 +93,26 @@ export function TodoListItem({
           )}
         </div>
       </div>
-      {todo.done ? null : (
-        <div className="flex-shrink-0 flex gap-2 ml-4">
+      <div className="flex flex-wrap gap-2 items-center justify-end">
+        {!todo.done && (
           <Button
+            type="button"
             onClick={handleEdit}
-            className="p-2 rounded-md text-sm font-medium transition-colors
-            bg-blue-500 text-white hover:bg-blue-600
-            dark:bg-blue-700 dark:hover:bg-blue-600"
+            className="inline-flex items-center gap-2 rounded-md bg-blue-500 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-600"
           >
-            {isEditing ? (
-              <Save className="h-5 w-5" />
-            ) : (
-              <Edit className="h-5 w-5" />
-            )}
+            {isEditing ? <Save className="h-4 w-4" /> : <Edit className="h-4 w-4" />}
+            {isEditing ? "Save" : "Edit"}
           </Button>
-          <Button
-            onClick={() => deleteTodo(todo.id)}
-            className="p-2 rounded-md text-sm font-medium transition-colors
-            bg-red-500 text-white hover:bg-red-600
-            dark:bg-red-700 dark:hover:bg-red-600"
-          >
-            <Delete className="h-5 w-5" />
-          </Button>
-        </div>
-      )}
+        )}
+        <Button
+          type="button"
+          onClick={() => deleteTodo(todo.id)}
+          className="inline-flex items-center gap-2 rounded-md bg-red-500 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600"
+        >
+          <Delete className="h-4 w-4" />
+          Delete
+        </Button>
+      </div>
     </div>
   );
 }

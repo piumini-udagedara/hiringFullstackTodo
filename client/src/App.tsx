@@ -88,17 +88,17 @@ function TodoAppContent() {
           </div>
           <div className="lg:col-span-2">
             <TodoList
-              todos={data || []}
-              toggleTodo={(e) => {
-                statusUpdateTodo({ id: e.id, done: e.stuts });
-              }}
-              deleteTodo={(id) => {
-                deleteTodo({ id: id });
-              }}
-              editTodo={(e) => {
-                updateTodo(e);
-              }}
-            />
+            todos={data || []}
+            toggleTodo={(e) => {
+              statusUpdateTodo({ id: e.id, done: e.done });
+            }}
+            deleteTodo={(id) => {
+              deleteTodo({ id });
+            }}
+            editTodo={(e) => {
+              updateTodo(e);
+            }}
+          />
           </div>
         </div>
       </main>
