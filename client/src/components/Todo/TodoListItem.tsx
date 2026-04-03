@@ -93,7 +93,7 @@ export function TodoListItem({
           )}
         </div>
       </div>
-      <div className="flex flex-wrap gap-2 items-center justify-end">
+      <div className="flex flex-wrap gap-2 items-center justify-end pl-4">
         {!todo.done && (
           <Button
             type="button"
